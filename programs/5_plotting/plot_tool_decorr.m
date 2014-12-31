@@ -19,7 +19,7 @@ b = 1.905;
 c = 0.1445;
 
 % Load file
-load(['/Volumes/MY BOOK/decor4/files/' system '/correlation_output/correlation_scaled_zeroed_together/scalecor_zero_all.mat']);
+load(['/home/awickert/Desktop/decor4/files/' system '/correlation_output/correlation_scaled_zeroed_together/scalecor_zero_all.mat']);
 
 % Define time
     % Years to hours for field case, seconds to hours for lab case
@@ -44,11 +44,11 @@ title(rivername,'FontSize',24,'Interpreter','latex');
 hold off
 
 % Save
-cd('/Volumes/MY BOOK/decor4/files/plotting/decor_plots')
-saveas(1,[system '.jpg'],'jpg')
+cd('/home/awickert/Desktop/decor4/files/plotting/decor_plots')
+%saveas(1,[system '.jpg'],'jpg')
 
 % Go back to running directory
-cd('/Volumes/MY BOOK/decor4/programs/5_plotting')
+cd('/home/awickert/Desktop/decor4/programs/5_plotting')
 
 
 

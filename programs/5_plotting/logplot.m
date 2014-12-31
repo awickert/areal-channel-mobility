@@ -4,10 +4,11 @@
 %% Setup
 
 rootpath = '/Users/awickert/Documents/decor5/files/';
+%rootpath = '/home/awickert/Desktop/decor5/files/';
 rwpath = '/rework_output/notvisited_zeroed_onelist/notvisited_notinitial_zero_all.mat';
 overlappath = '/correlation_output/correlation_scaled_zeroed_together/scalecor_zero_all.mat';
 
-exportfigs=0; % 1 to export, 0 to not
+exportfigs=1; % 1 to export, 0 to not
 
 % First, identify the experiments in which time steps really should be
 % constant and need to be fixed.
@@ -31,6 +32,13 @@ overlap_output = zeros(length(dtlist),4);
                         
 % Second, identify experiments in which we should pick only a subset of the
 % avaiable data points for analysis.
+
+% Third, choose the text positions
+xrel_lin = .55;
+yrel_lin = .8;
+xrel_log = .05;
+yrel_log = .1;
+% BV-2 (Tal Veg) will always use the "log" versions
 
 %% Loop start
 generate_plots=1; % switch
@@ -291,32 +299,61 @@ for experiment=1:length(dtlist)
         generate_plots=0; % switch off
     end
 
+    % Text
+    textstrR = ['R = ', num2str(c.R, 4)];
+    textstrM = ['M = ', num2str(co.M, 4)];
+    
     figure(rwfig)
     subplot(3,3,experiment)
     hold on
-    plot(t,rw,'k.','MarkerSize',4,'MarkerEdgeColor',[.6 .6 .6]) % Points
+    plot(t,rw,'k.','MarkerSize',4,'MarkerEdgeColor',[.8 .8 .8]) % Points
     if const_dt(experiment)
-        plot(teven,rwstack) % Line
-        plot(teven,rwexp,'r-')
+        plot(teven,rwstack, 'Color', [.4 .4 .4], 'LineWidth', 3) % Line
+        plot(teven,rwexp, 'Color', [0 0 0], 'LineWidth', 3)
     end
     ylim([0 1])
+    % text
+    xlim([0 ceil(max(t))])
+    xl = xlim;
+    yl = ylim;
+    if all(descriptive_titles{experiment}(1:4) == 'BV-2')
+        xt_pos_lin = .1*(abs(diff(xlim))) + xl(1);
+        yt_pos_lin = .2*(abs(diff(ylim))) + yl(1);
+    else
+        xt_pos_lin = xrel_lin*(abs(diff(xlim))) + xl(1);
+        yt_pos_lin = yrel_lin*(abs(diff(ylim))) + yl(1);
+    end
+    text(xt_pos_lin,yt_pos_lin,textstrR, 'FontSize', 18)
     hold off
-    title(descriptive_titles{experiment})
+    title(descriptive_titles{experiment}, 'FontSize', 18)
+    set(gca,'FontSize',18) % tick labels
     
     figure(overlapfig)
     subplot(3,3,experiment)
     hold on
-    plot(t,o,'k.','MarkerSize',4,'MarkerEdgeColor',[.6 .6 .6]) % Points
+    plot(t,o,'k.','MarkerSize',4,'MarkerEdgeColor',[.8 .8 .8]) % Points
     if const_dt(experiment)
-        plot(teven,ostack) % Line
-        plot(teven,oexp,'r-')
+        plot(teven,ostack, 'Color', [.4 .4 .4], 'LineWidth', 3) % Line
+        plot(teven,oexp, 'Color', [0 0 0], 'LineWidth', 3)
     end
     yl = ylim;
 %    ylim([yl(1), 1])
     ylim([-.5 1])
+    xlim([0 ceil(max(t))])
+    xl = xlim;
+    yl = ylim;
+    if all(descriptive_titles{experiment}(1:4) == 'BV-2')
+        xt_pos_lin = .1*(abs(diff(xlim))) + xl(1);
+        yt_pos_lin = .2*(abs(diff(ylim))) + yl(1);
+    else
+        xt_pos_lin = xrel_lin*(abs(diff(xlim))) + xl(1);
+        yt_pos_lin = yrel_lin*(abs(diff(ylim))) + yl(1);
+    end
+    text(xt_pos_lin,yt_pos_lin,textstrM, 'FontSize', 18)
     hold off
-    title(descriptive_titles{experiment})
-
+    title(descriptive_titles{experiment}, 'FontSize', 18)
+    set(gca,'FontSize',18) % tick labels
+    
 %     figure(rwlog)
 %     subplot(3,3,experiment)
 %     semilogy(t,rw,'k.','markers',4) % Points
@@ -337,15 +374,27 @@ for experiment=1:length(dtlist)
 
     figure(rwlog_norm)
     subplot(3,3,experiment)
-    semilogy(t,rwnorm,'k.','MarkerSize',4,'MarkerEdgeColor',[.6 .6 .6]) % Points
+    semilogy(t,rwnorm,'k.','MarkerSize',4,'MarkerEdgeColor',[.8 .8 .8]) % Points
     ylim([1E-3 1])
     hold on
     if const_dt(experiment)
-        semilogy(teven,rwstack_norm) % Line
-        semilogy(teven,exp(-1*c.R*teven),'r-')
+        semilogy(teven,rwstack_norm, 'Color', [.4 .4 .4], 'LineWidth', 3) % Line
+        semilogy(teven,exp(-1*c.R*teven), 'Color', [0 0 0], 'LineWidth', 3)
     end
+    xlim([0 ceil(max(t))])
+    xl = xlim;
+    yl = ylim;
+    if all(descriptive_titles{experiment}(1:4) == 'BV-2')
+        xt_pos_lin = .1*(abs(diff(xlim))) + xl(1);
+        yt_pos_log = 5E-3;
+    else
+        xt_pos_lin = xrel_lin*(abs(diff(xlim))) + xl(1);
+        yt_pos_log = .5;
+    end
+    text(xt_pos_lin,yt_pos_log,textstrR, 'FontSize', 18)
     hold off
-    title(descriptive_titles{experiment})
+    title(descriptive_titles{experiment}, 'FontSize', 18)
+    set(gca,'FontSize',18) % tick labels
 
 %     figure(overlaplog_norm)
 %     subplot(3,3,experiment)
@@ -361,11 +410,12 @@ end
 
 output = [overlap_output rw_output]
 
+%getenv('HOME')
 if exportfigs
     figure(rwfig)
-    export_fig '/Users/awickert/Documents/geology_docs/papers/Working copies/Channel mobility - methods/figures/rework_lin.png' -png -transparent -m2
+    export_fig '/Users/awickert/Documents/geology_docs/papers/Submitted copies/Channel_mobility/Revising2012/figures/rework_lin.png' -png -transparent -m2
     figure(overlapfig)
-    export_fig '/Users/awickert/Documents/geology_docs/papers/Working copies/Channel mobility - methods/figures/overlap_lin.png' -png -transparent -m2
+    export_fig '/Users/awickert/Documents/geology_docs/papers/Submitted copies/Channel_mobility/Revising2012/figures/overlap_lin.png' -png -transparent -m2
     figure(rwlog_norm)
-    export_fig '/Users/awickert/Documents/geology_docs/papers/Working copies/Channel mobility - methods/figures/rework_log.png' -png -transparent -m2
+    export_fig '/Users/awickert/Documents/geology_docs/papers/Submitted copies/Channel_mobility/Revising2012/figures/rework_log.png' -png -transparent -m2
 end
