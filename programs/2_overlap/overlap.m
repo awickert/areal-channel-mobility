@@ -2,11 +2,16 @@ clear all; close all;
 
 % This program loads the binary channel-map file for each image,
 % finds the change between each image and a given baseline, and sums the
-% change into a single value showing amount of decorrelation (as opposed to
-% amount of correlation, which is what the final graphs show). These single
-% values are accumulated across the whole timeseries of data into a new
-% single DAT file, and a DAT file like this can be created for as many
+% change into a single value showing amount of decorrelation, or (as has been 
+% more conservatively termed in the paper, loss of planform overlap (as opposed 
+# to amount of remaining planform overlap, which is what the final graphs show).
+% These single values are accumulated across the whole timeseries of data into 
+% a new single DAT file, and a DAT file like this can be created for as many
 % baselines as are specified.
+
+% Variables are still named "corr" in memory of their previous naming as 
+% "correlation" / "decorrelation" -- while this is not correlation in a strict 
+% sense, it is analogous as a spatial overlap of patterns
 
 
 % turns the DAT files for each of the images into single
@@ -18,8 +23,8 @@ clear all; close all;
 
 
 % Human-entered variables and directory names
-correlation_vars %This is the file that needs to be edited for each run.
-directories %This is automated based on selections in correlation_vars.m.
+overlap_vars %This is the file that needs to be edited for each run.
+directories %This is automated based on selections in overlap_vars.m.
 
 % Channel-maps
 cd(channelmapindir);
@@ -41,7 +46,7 @@ for z=1:numel(channelmaps)
     
     % Load the *.mat channel-map files and specify the output filename.
     % (The specification of the output filename is set to be automated
-    % based on the filename time-stamp, set through correlation_vars.m.
+    % based on the filename time-stamp, set through overlap_vars.m.
     cd(channelmapindir);
     baselinename=([channelmaps(z).name]);
     baseline=load(baselinename);
@@ -76,7 +81,7 @@ for z=1:numel(channelmaps)
         npix_decor_outmat(f,2)=changedpix;
         
         
-        % STEP 2: Build scaling parameters and apply the correlation.
+        % STEP 2: Build scaling parameters and apply the overlap.
         Phi=timepix(z,3)*timepix(f,4)+timepix(z,4)*timepix(f,3);
         corr_outmat(f,2)=1-changedpix/(Phi*A);
         
@@ -87,7 +92,7 @@ for z=1:numel(channelmaps)
     end
     
     % Step 4: make the single 2-column list of time-steps and scaled
-    % correlation with t=0 at each baseline.
+    % overlap with t=0 at each baseline.
     if z==1
         corr_zero_onelist=corr_zero_outmat;
     else
