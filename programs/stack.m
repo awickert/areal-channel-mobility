@@ -1,4 +1,7 @@
-% Change file names from name number
+% Build a stack of all of the outputs for visualization.
+% This has been superceded by the programs that create the full scatter plots, 
+% with running means and all data. But I have kept it around in case it is 
+% useful and to show my thought process back in 2006.
 
 % Directories
 
