@@ -61,4 +61,4 @@ For starteres, though, the basic channel overlap and reworking plots are generat
 
 ### Need help?
 
-If you try to use this analysis routine in your work and get stuck because there is very little documentation (in spite of some good comments!), send a message to Andy Wickert, and he will take that as motivation to write better documentation.
+If you try to use this analysis routine in your work and get stuck because there is very little documentation (in spite of some good comments!), send a message to Andy Wickert, and he will take that as motivation to write better documentation. Or to just rewrite a bunch of the code, because this is the first big thing he ever wrote, and there are mcuh better ways to do it these days!
