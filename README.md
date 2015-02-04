@@ -35,7 +35,7 @@ If you use this analysis routine in your work, please cite:<br>
 
 These codes analyze how much the channel loses overlap with an initial pattern with different lag times from an initial pattern.
 
-1. Set the directories in overlap_vars.m in the overlap program root folder, and build an appropriate filesystem, or (recommended) use the provided one. **NOTE: I HAVEN'T BUILT THE PROVIDED ONE YET!**
+1. Set the directories in overlap_vars.m in the overlap program root folder, and build an appropriate filesystem, or (recommended) use the provided one.
 2. Run the code
 
 #### Part 3: INSTANTANEOUS PLANFORM CHANGE
